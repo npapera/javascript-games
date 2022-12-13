@@ -55,9 +55,21 @@
 
             testCollision = function(rect1, rect2) {
                 return ((rect1.x <= rect2.x + food.width-1) && 
-                (rect2.x <= rect1.x + snakeBody.width-1) &&
-                (rect1.y <= rect2.y + food.height-1) && 
-                (rect2.y <= rect1.y + snakeBody.height-1));
+                        (rect2.x <= rect1.x + snakeBody.width-1) &&
+                        (rect1.y <= rect2.y + food.height-1) && 
+                        (rect2.y <= rect1.y + snakeBody.height-1));
+            }
+
+            testCollisionSnake = function(snake1, snake2) {
+                return ((Math.abs(snake1.x-snake2.x)<20) && 
+                        (Math.abs(snake1.y-snake2.y)<20));
+            }
+
+            endGameScreen = function() {
+                var canvas = document.getElementById("myCanvas");
+                var ctx = canvas.getContext("2d");
+                ctx.font = "30px Arial";
+                ctx.strokeText("Game Over", WIDTH/2, HEIGHT/2);
             }
 
             drawSnake = function(sb,i) {
@@ -134,7 +146,9 @@
             }
 
             isGameOver = function() {
-                for (var i = 1; i <= snakeList.length; i++) {
+                for (i in snakeList) {
+                    if (i == 0)
+                        continue;
                     if (testCollisionSnake(snakeList[0], snakeList[i])) {
                         clearInterval(intervalVar);
                         return;
@@ -156,10 +170,6 @@
                 snakeList.forEach(drawSnake);
 
                 if (testCollision(snakeList[0], foodList[0])) {
-                    console.log("FOOD X (RECT2): " + foodList[0].x)
-                    console.log("FOOD Y (RECT2): " + foodList[0].y)
-                    console.log("SNAKE X (RECT1): " + snakeList[0].x)
-                    console.log("SNAKE Y (RECT1): " + snakeList[0].y)
                     foodList = [];
                     eaten = true;
                     var new_X, new_Y;
@@ -184,6 +194,7 @@
 
                 updateSnakeList();
                 checkSnakePosition();
+                isGameOver();
             }
 
             startGame = function() {
