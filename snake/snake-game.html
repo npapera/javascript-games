@@ -17,7 +17,7 @@
             var snakeBody = {
                 width: 20,
                 height: 20,
-                color: 'green'
+                color: '#87cefa'
             };
 
             var food = {
@@ -52,7 +52,7 @@
             drawSnake = function(sb,i) {
                 ctx.save();
                 if (i==0)
-                    ctx.fillStyle = 'black';
+                    ctx.fillStyle = '#4169e1';
                 else
                     ctx.fillStyle = snakeBody.color;
                 ctx.fillRect(sb.x,sb.y,snakeBody.width,snakeBody.height)
@@ -107,10 +107,26 @@
                 }
             }
 
+            checkSnakePosition = function() {
+                if (snakeList[0].x > 500) {
+                    snakeList[0].x = 0;
+                } 
+                if (snakeList[0].x < 0) {
+                    snakeList[0].x = 500;
+                }
+                if (snakeList[0].y > 500) {
+                    snakeList[0].y = 0;
+                }
+                if (snakeList[0].y < 0) {
+                    snakeList[0].y = 500;
+                }
+            }
+
             updateSnakePosition = function() {
                 ctx.clearRect(0,0,WIDTH,HEIGHT);
                 snakeList.forEach(drawSnake);
                 updateSnakeList();
+                checkSnakePosition();
             }
 
             startGame = function() {
