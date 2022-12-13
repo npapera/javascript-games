@@ -23,7 +23,7 @@
             var food = {
                 width: 20,
                 height: 20,
-                color: 'orange'
+                color: '#3CB371'
             };
 
             document.onkeydown = function(event) {
@@ -32,16 +32,24 @@
                 //2 - right
                 //3 - down
                 if (event.keyCode == 37) {
-                    direction = 0;
+                    if(direction != 2){
+                        direction = 0;
+                    }
                 }
                 else if (event.keyCode == 38) {
-                    direction = 1;
+                    if(direction != 3){
+                        direction = 1;
+                    }
                 }
                 else if (event.keyCode == 39) {
-                    direction = 2;
+                    if(direction != 0){
+                        direction = 2;
+                    }
                 }
                 else if (event.keyCode == 40) {
-                    direction = 3;
+                    if(direction != 1){
+                        direction = 3;
+                    }
                 }
             }
 
@@ -130,8 +138,8 @@
                 while (eaten) {
                     //pos_x and pos_y set random values for food
                     //pos values are in multiples of 20 (range: 0 to 480)
-                    var pos_x = Math.ceil(Math.random()*480/20)*20;
-                    var pos_y = Math.ceil(Math.random()*480/20)*20;
+                    var pos_x = Math.ceil(Math.random()*(WIDTH-snakeBody.width)/snakeBody.width)*snakeBody.width;
+                    var pos_y = Math.ceil(Math.random()*(HEIGHT-snakeBody.height)/snakeBody.width)*snakeBody.width;
                     foodList[0] = {x:pos_x, y:pos_y};
                     eaten = false;
                 }
