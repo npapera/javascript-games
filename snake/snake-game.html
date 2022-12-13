@@ -133,6 +133,15 @@
                 }
             }
 
+            isGameOver = function() {
+                for (var i = 1; i <= snakeList.length; i++) {
+                    if (testCollisionSnake(snakeList[0], snakeList[i])) {
+                        clearInterval(intervalVar);
+                        return;
+                    }
+                }
+            }
+
             updateSnakePosition = function() {
                 ctx.clearRect(0,0,WIDTH,HEIGHT);
                 while (eaten) {
@@ -190,7 +199,7 @@
                 eaten = true;
                 //1000 ms - 1 fps
                 //100 ms - 10 fps
-                setInterval(updateSnakePosition,100);
+                intervalVar = setInterval(updateSnakePosition,100);
             }
 
             startGame();
