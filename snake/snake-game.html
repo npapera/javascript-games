@@ -34,21 +34,25 @@
                 if (event.keyCode == 37) {
                     if(direction != 2){
                         direction = 0;
+                        isStarted = true;
                     }
                 }
                 else if (event.keyCode == 38) {
                     if(direction != 3){
                         direction = 1;
+                        isStarted = true;
                     }
                 }
                 else if (event.keyCode == 39) {
                     if(direction != 0){
                         direction = 2;
+                        isStarted = true;
                     }
                 }
                 else if (event.keyCode == 40) {
                     if(direction != 1){
                         direction = 3;
+                        isStarted = true;
                     }
                 }
             }
@@ -65,11 +69,22 @@
                         (Math.abs(snake1.y-snake2.y)<20));
             }
 
-            endGameScreen = function() {
-                var canvas = document.getElementById("myCanvas");
-                var ctx = canvas.getContext("2d");
+            startGameText = function() {
+                ctx.save();
                 ctx.font = "30px Arial";
+                ctx.fillStyle = '#000000'
+                ctx.textAlign = 'center';
+                ctx.strokeText("Press an arrow key to start", WIDTH/2, HEIGHT/2);
+                ctx.restore();
+            }
+
+            endGameText = function() {
+                ctx.save();
+                ctx.font = "30px Arial";
+                ctx.fillStyle = '#000000'
+                ctx.textAlign = 'center';
                 ctx.strokeText("Game Over", WIDTH/2, HEIGHT/2);
+                ctx.restore();
             }
 
             drawSnake = function(sb,i) {
@@ -151,6 +166,7 @@
                         continue;
                     if (testCollisionSnake(snakeList[0], snakeList[i])) {
                         clearInterval(intervalVar);
+                        isEnded = true;
                         return;
                     }
                 }
@@ -166,8 +182,10 @@
                     foodList[0] = {x:pos_x, y:pos_y};
                     eaten = false;
                 }
-                foodList.forEach(drawFood);
-                snakeList.forEach(drawSnake);
+                if (isStarted) {
+                    foodList.forEach(drawFood);
+                    snakeList.forEach(drawSnake);
+                }
 
                 if (testCollision(snakeList[0], foodList[0])) {
                     foodList = [];
@@ -195,6 +213,12 @@
                 updateSnakeList();
                 checkSnakePosition();
                 isGameOver();
+                if (!isStarted) {
+                    startGameText();
+                }
+                if (isEnded) {
+                    endGameText();
+                }
             }
 
             startGame = function() {
@@ -204,12 +228,14 @@
                     {x:200, y:200},
                     {x:180, y:200},
                 ];
-
                 foodList = [];
                 direction = 99;
                 eaten = true;
+                isStarted = false;
+                isEnded = false;
                 //1000 ms - 1 fps
                 //100 ms - 10 fps
+                ctx.clearRect(0,0,WIDTH,HEIGHT);
                 intervalVar = setInterval(updateSnakePosition,100);
             }
 
