@@ -12,7 +12,7 @@
             ctx.font = '20px Calibri';
             var WIDTH = 500;
             var HEIGHT = 500;
-            var numOfTiles, tileList, score, intervalVar, isRunning;
+            var numOfTiles, tileList, score, intervalVar, isStarted, isRunning;
             ctx.font = '20px Calibri';
 
             var ball = {
@@ -43,12 +43,15 @@
             };
 
             document.getElementById('ctx').onmousedown = function() {
-                clearInterval(intervalVar);
+                if (isRunning) {
+                    isRunning = false;
+                    clearInterval(intervalVar);
+                }
                 startGame();
             }
 
             document.onkeydown = function(event) {
-                isRunning = true;
+                isStarted = true;
                 if (event.keyCode == 37) {
                     base.pressingLeft = true;
                     base.pressingRight = false;
@@ -212,7 +215,7 @@
                 ctx.fillText("Score: "+score, 10, 490);
                 ctx.fillText("Lives: "+base.lives, 430, 490);
 
-                if (isRunning) {
+                if (isStarted) {
                     updateBasePosition();
                     updateBallPosition();
                     isGameOver();
@@ -231,14 +234,17 @@
             startGame = function() {
                 base.x = WIDTH/2 - base.width/2;
                 ball.x =  WIDTH/2;
-                ball.y = base.y - 15;
+                ball.y = base.y - 50;
                 numOfTiles = 0;
                 var tileX = 5;
                 var tileY = 5;
+                ball.spdX = 2;
+                ball.spdY = -2;
                 tileList = [];
                 score = 0;
                 base.lives = 3;
-                isRunning = false;
+                isStarted = false;
+                isRunning = true;
                 for (var i=1; i<6; i++) {
                     for (var j=1; j<=11; j++) {
                         tileList[numOfTiles] = {x:tileX, y:tileY};
