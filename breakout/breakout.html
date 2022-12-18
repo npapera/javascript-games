@@ -12,7 +12,7 @@
             ctx.font = '20px Calibri';
             var WIDTH = 500;
             var HEIGHT = 500;
-            var numOfTiles, tileList, score, intervalVar, isStarted, isRunning;
+            var numOfTiles, tileList, score, intervalVar, isStarted, isRunning, hasSpdChanged, numSpdChanged;
             ctx.font = '20px Calibri';
 
             var ball = {
@@ -147,43 +147,24 @@
                 }
             }
 
+            increaseBallSpeed = function() {
+                if (Math.sign(ball.spdX) == -1){
+                    ball.spdX = -(Math.abs(ball.spdX)+1);
+                } else {
+                    ball.spd++;
+                }
+                if (Math.sign(ball.spdY) == -1){
+                    ball.spdY = -(Math.abs(ball.spdY)+1);
+                } else {
+                    ball.spdY++;
+                }
+                hasSpdChanged == true;
+            }
+
             updateBallPosition = function() {
                 ball.x += ball.spdX;
                 ball.y += ball.spdY;
-                if(numOfTiles <= 50 && numOfTiles > 40){
-                    if (Math.sign(ball.spdX) == -1){
-                        ball.spdX = -3;
-                    } else {
-                        ball.spdX = 3;
-                    }
-                    if (Math.sign(ball.spdY) == -1){
-                        ball.spdY = -3;
-                    } else {
-                        ball.spdY = 3;
-                    }
-                } else if (numOfTiles <= 40 && numOfTiles > 30){
-                    if (Math.sign(ball.spdX) == -1){
-                        ball.spdX = -4;
-                    } else {
-                        ball.spdX = 4;
-                    }
-                    if (Math.sign(ball.spdY) == -1){
-                        ball.spdY = -4;
-                    } else {
-                        ball.spdY = 4;
-                    }
-                } else if (numOfTiles <= 25) {
-                    if (Math.sign(ball.spdX) == -1){
-                        ball.spdX = -5;
-                    } else {
-                        ball.spdX = 5;
-                    }
-                    if (Math.sign(ball.spdY) == -1){
-                        ball.spdY = -5;
-                    } else {
-                        ball.spdY = 5;
-                    }
-                }
+
                 if ((ball.x+ball.radius) > WIDTH || ball.x-ball.radius < 0) {
                     ball.spdX = -ball.spdX;
                 }
@@ -209,6 +190,17 @@
                         ball.spdY = -ball.spdY;
                         numOfTiles--;
                         score += 5;
+                        if (numOfTiles == 50){
+                            increaseBallSpeed();
+                        } else if (numOfTiles == 40){
+                            increaseBallSpeed();
+                            base.spdX++;
+                        } else if (numOfTiles == 25) {
+                            increaseBallSpeed();
+                            base.spdX++;
+                        }
+                        console.log(ball.spdX)
+                        console.log(ball.spdY)
                     }
                 }
 
@@ -245,6 +237,8 @@
                 base.lives = 3;
                 isStarted = false;
                 isRunning = true;
+                hasSpdChanged = false;
+                numSpdChanged = 0;
                 for (var i=1; i<6; i++) {
                     for (var j=1; j<=11; j++) {
                         tileList[numOfTiles] = {x:tileX, y:tileY};
