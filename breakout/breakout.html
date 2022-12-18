@@ -18,7 +18,9 @@
                 x: 0,
                 y: 0,
                 radius: 5,
-                color: 'blue'
+                color: '#000000',
+                spdX: -5,
+                spdY: -5
             };
 
             var base = {
@@ -26,7 +28,7 @@
                 y: 400,
                 height: 20,
                 width: 100,
-                color: 'red',
+                color: '#000000',
                 pressingLeft: false,
                 pressingRight: false
             };
@@ -79,9 +81,21 @@
                 }
             }
 
+            updateBallPosition = function() {
+                ball.x += ball.spdX;
+                ball.y += ball.spdY;
+                if (ball.x > WIDTH || ball.x < 0) {
+                    ball.spdX = -ball.spdX;
+                }
+                if (ball.y > HEIGHT || ball.y < 0) {
+                    ball.spdY = -ball.spdY;
+                }
+            }
+
             update = function() {
                 ctx.clearRect(0,0,WIDTH,HEIGHT);
                 updateBasePosition();
+                updateBallPosition();
                 drawBall();
                 drawBase();
             }
@@ -89,7 +103,7 @@
             startGame = function() {
                 base.x = WIDTH/2 - base.width/2;
                 ball.x =  base.x + 100;
-                ball.y = base.y - 100;
+                ball.y = base.y - 150;
                 setInterval(update, 20);
             }
 
