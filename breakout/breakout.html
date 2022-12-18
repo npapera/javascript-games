@@ -19,14 +19,14 @@
                 y: 0,
                 radius: 5,
                 color: '#000000',
-                spdX: -5,
-                spdY: -5
+                spdX: -2,
+                spdY: -2
             };
 
             var base = {
                 x: 0,
                 y: 400,
-                height: 20,
+                height: 10,
                 width: 100,
                 color: '#000000',
                 pressingLeft: false,
@@ -49,6 +49,13 @@
                 } else if (event.keyCode == 39) {
                     base.pressingRight = false;
                 }
+            }
+
+            testVerticalCollision = function(base, ball) {
+                return ((base.x < ball.x + 2*ball.radius) &&
+                        (ball.x < base.x + base.width) &&
+                        (base.y < ball.y + 2*ball.radius) &&
+                        (ball.y < base.y + base.height));
             }
 
             drawBall = function() {
@@ -84,20 +91,23 @@
             updateBallPosition = function() {
                 ball.x += ball.spdX;
                 ball.y += ball.spdY;
-                if (ball.x > WIDTH || ball.x < 0) {
+                if ((ball.x+ball.radius) > WIDTH || ball.x-ball.radius < 0) {
                     ball.spdX = -ball.spdX;
                 }
-                if (ball.y > HEIGHT || ball.y < 0) {
+                if ((ball.y+ball.radius) > HEIGHT || (ball.y-ball.radius) < 0) {
                     ball.spdY = -ball.spdY;
                 }
             }
 
             update = function() {
                 ctx.clearRect(0,0,WIDTH,HEIGHT);
-                updateBasePosition();
-                updateBallPosition();
                 drawBall();
                 drawBase();
+                if (testVerticalCollision(base, ball)) {
+                    ball.spdY = -ball.spdY;
+                }
+                updateBasePosition();
+                updateBallPosition();
             }
 
             startGame = function() {
