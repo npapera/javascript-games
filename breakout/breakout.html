@@ -31,6 +31,24 @@
                 pressingRight: false
             };
 
+            document.onkeydown = function(event) {
+                if (event.keyCode == 37) {
+                    base.pressingLeft = true;
+                    base.pressingRight = false;
+                } else if (event.keyCode == 39) {
+                    base.pressingLeft = false;
+                    base.pressingRight = true;
+                }
+            }
+
+            document.onkeyup = function(event) {
+                if (event.keyCode == 37) {
+                    base.pressingLeft = false;
+                } else if (event.keyCode == 39) {
+                    base.pressingRight = false;
+                }
+            }
+
             drawBall = function() {
                 ctx.save();
                 ctx.fillStyle = ball.color;
