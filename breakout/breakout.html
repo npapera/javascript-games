@@ -12,7 +12,7 @@
             ctx.font = '20px Calibri';
             var WIDTH = 500;
             var HEIGHT = 500;
-            var numOfTiles, tileList;
+            var numOfTiles, tileList, score;
             ctx.font = '20px Calibri';
 
             var ball = {
@@ -20,8 +20,8 @@
                 y: 0,
                 radius: 5,
                 color: '#000000',
-                spdX: -2,
-                spdY: -2
+                spdX: 2,
+                spdY: 2
             };
 
             var base = {
@@ -113,6 +113,40 @@
             updateBallPosition = function() {
                 ball.x += ball.spdX;
                 ball.y += ball.spdY;
+                if(numOfTiles <= 50 && numOfTiles > 40){
+                    if (Math.sign(ball.spdX) == -1){
+                        ball.spdX = -3;
+                    } else {
+                        ball.spdX = 3;
+                    }
+                    if (Math.sign(ball.spdY) == -1){
+                        ball.spdY = -3;
+                    } else {
+                        ball.spdY = 3;
+                    }
+                } else if (numOfTiles <= 40 && numOfTiles > 30){
+                    if (Math.sign(ball.spdX) == -1){
+                        ball.spdX = -4;
+                    } else {
+                        ball.spdX = 4;
+                    }
+                    if (Math.sign(ball.spdY) == -1){
+                        ball.spdY = -4;
+                    } else {
+                        ball.spdY = 4;
+                    }
+                } else if (numOfTiles <= 25) {
+                    if (Math.sign(ball.spdX) == -1){
+                        ball.spdX = -5;
+                    } else {
+                        ball.spdX = 5;
+                    }
+                    if (Math.sign(ball.spdY) == -1){
+                        ball.spdY = -5;
+                    } else {
+                        ball.spdY = 5;
+                    }
+                }
                 if ((ball.x+ball.radius) > WIDTH || ball.x-ball.radius < 0) {
                     ball.spdX = -ball.spdX;
                 }
@@ -133,9 +167,14 @@
                     if (testTileCollision(tileList[key], ball)) {
                         delete tileList[key];
                         ball.spdY = -ball.spdY;
-                        console.log(numOfTiles);
+                        numOfTiles -= 1;
+                        score += 5;
                     }
                 }
+
+                ctx.fillText("Score: "+score, 10, 490);
+                ctx.fillText("Tiles: "+numOfTiles, 425, 490);
+
                 updateBasePosition();
                 updateBallPosition();
             }
@@ -148,6 +187,7 @@
                 var tileX = 5;
                 var tileY = 5;
                 tileList = [];
+                score = 0;
                 for (var i=1; i<6; i++) {
                     for (var j=1; j<=11; j++) {
                         tileList[numOfTiles] = {x:tileX, y:tileY};
