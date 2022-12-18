@@ -33,6 +33,7 @@
                 pressingLeft: false,
                 pressingRight: false,
                 spdX: 5,
+                lives: 3
             };
 
             var tile = {
@@ -153,6 +154,9 @@
                 if ((ball.y+ball.radius) > HEIGHT || (ball.y-ball.radius) < 0) {
                     ball.spdY = -ball.spdY;
                 }
+                if ((ball.y+ball.radius) > HEIGHT) {
+                    base.lives--;
+                }
             }
 
             update = function() {
@@ -167,13 +171,13 @@
                     if (testTileCollision(tileList[key], ball)) {
                         delete tileList[key];
                         ball.spdY = -ball.spdY;
-                        numOfTiles -= 1;
+                        numOfTiles--;
                         score += 5;
                     }
                 }
 
                 ctx.fillText("Score: "+score, 10, 490);
-                ctx.fillText("Tiles: "+numOfTiles, 425, 490);
+                ctx.fillText("Lives: "+base.lives, 430, 490);
 
                 updateBasePosition();
                 updateBallPosition();
@@ -188,6 +192,7 @@
                 var tileY = 5;
                 tileList = [];
                 score = 0;
+                base.lives = 3;
                 for (var i=1; i<6; i++) {
                     for (var j=1; j<=11; j++) {
                         tileList[numOfTiles] = {x:tileX, y:tileY};
