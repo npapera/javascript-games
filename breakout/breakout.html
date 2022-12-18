@@ -12,6 +12,7 @@
             ctx.font = '20px Calibri';
             var WIDTH = 500;
             var HEIGHT = 500;
+            var numOfTiles, tileList;
             ctx.font = '20px Calibri';
 
             var ball = {
@@ -30,7 +31,13 @@
                 width: 100,
                 color: '#000000',
                 pressingLeft: false,
-                pressingRight: false
+                pressingRight: false,
+                spdX: 5,
+            };
+
+            var tile = {
+                height: 20,
+                width: 40
             };
 
             document.onkeydown = function(event) {
@@ -51,10 +58,10 @@
                 }
             }
 
-            testVerticalCollision = function(base, ball) {
-                return ((base.x < ball.x + 2*ball.radius) &&
+            testTopBaseCollision = function(base, ball) {
+                return ((base.x < ball.x + ball.radius) &&
                         (ball.x < base.x + base.width) &&
-                        (base.y < ball.y + 2*ball.radius) &&
+                        (base.y < ball.y + ball.radius) &&
                         (ball.y < base.y + base.height));
             }
 
@@ -76,9 +83,9 @@
 
             updateBasePosition = function() {
                 if (base.pressingLeft) {
-                    base.x = base.x - 5;
+                    base.x = base.x - base.spdX;
                 } else if (base.pressingRight) {
-                    base.x = base.x + 5;
+                    base.x = base.x + base.spdX;
                 }
                 if (base.x < 0) {
                     base.x = 0
@@ -103,7 +110,7 @@
                 ctx.clearRect(0,0,WIDTH,HEIGHT);
                 drawBall();
                 drawBase();
-                if (testVerticalCollision(base, ball)) {
+                if (testTopBaseCollision(base, ball)) {
                     ball.spdY = -ball.spdY;
                 }
                 updateBasePosition();
@@ -114,6 +121,19 @@
                 base.x = WIDTH/2 - base.width/2;
                 ball.x =  base.x + 100;
                 ball.y = base.y - 150;
+                numOfTiles = 0;
+                var tileX = 5;
+                var tileY = 5;
+                tileList = [];
+                for (var i=1; i<6; i++) {
+                    for (var j=1; j<=11; j++) {
+                        tileList[numOfTiles] = {x:tileX, y:tileY};
+                        numOfTiles++;
+                        tileX += 45;
+                    }
+                    tileX = 5;
+                    tileY += 25;
+                }
                 setInterval(update, 20);
             }
 
